@@ -18,18 +18,26 @@ def pause_and_resume_unregistered_torrents(qb_client):
                 continue
 
             for tracker in torrent.trackers:
+                size_gb = torrent.size / (1024**3)
+                if size_gb < 14:
+                    logging.info(f"Deleting torrent '{torrent.name}' (Size: {size_gb:.2f} GB)")
+                    torrent.pause()
+                    torrent.delete(delete_files=True)
+                    break;
+                if size_gb > 50:
+                    torrent.pause()
+                    logging.info(f"Deleting torrent '{torrent.name}' (Size: {size_gb:.2f} GB)")
+                    torrent.delete(delete_files=True)
+                    break;
                 if tracker.msg == "unregistered torrent":
-                    size_gb = torrent.size / (1024**3)
-                    if 14 < size_gb < 50:
-                        logging.info(f"Pausing torrent '{torrent.name}'")
-                        torrent.pause()
-                        logging.info(f"Resuming torrent '{torrent.name}'")
-                        torrent.resume()
-                        break
-                    else:
-                        logging.info(f"Deleting torrent '{torrent.name}' (Size: {size_gb:.2f} GB)")
-                        torrent.delete(delete_files=True)
-                        break
+                    logging.info(f"Pausing torrent '{torrent.name}'")
+                    torrent.pause()
+                    logging.info(f"Resuming torrent '{torrent.name}'")
+                    torrent.resume()
+                    break;
+                else:
+                    torrent.resume;
+    
     except APIConnectionError as e:
         logging.error(f"Connection to qBittorrent failed: {e}")
 
