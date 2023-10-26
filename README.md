@@ -1,5 +1,9 @@
 # qbtl
-Solve the problem of "unregistered torrent" in torrentleech tracker information
+qbittorrent torrentleech tool
+
+## Features
+1. Filter by seed size
+2. Solve the problem of unable to start downloadin(unregistered torrent)
 
 ## Usage
 1. Install qbittorrent-api
