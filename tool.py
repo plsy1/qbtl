@@ -41,7 +41,7 @@ def pause_and_resume_unregistered_torrents(qb_client):
     except APIConnectionError as e:
         logging.error(f"Connection to qBittorrent failed: {e}")
 
-qb = Client(host='127.0.0.1:8080', port=8080, username='fmk3325', password='3P2dAErvRdMMV5x')
+qb = Client(host='127.0.0.1:8080', port=8080, username='', password='')
 qb.auth_log_in()
 
 call_count = 0
