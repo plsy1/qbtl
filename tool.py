@@ -1,6 +1,11 @@
 import time
+import logging
 from qbittorrentapi import Client
 from qbittorrentapi.exceptions import NotFound404Error, APIConnectionError
+
+
+logging.basicConfig(filename='tllog.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 def pause_and_resume_unregistered_torrents(qb_client):
     try:
@@ -16,20 +21,19 @@ def pause_and_resume_unregistered_torrents(qb_client):
                 if tracker.msg == "unregistered torrent":
                     size_gb = torrent.size / (1024**3)
                     if 14 < size_gb < 50:
-                        print(f"Pausing torrent '{torrent.name}'")
+                        logging.info(f"Pausing torrent '{torrent.name}'")
                         torrent.pause()
-                        print(f"Resuming torrent '{torrent.name}'")
+                        logging.info(f"Resuming torrent '{torrent.name}'")
                         torrent.resume()
                         break
                     else:
-                        print(f"Deleting torrent '{torrent.name}' (Size: {size_gb:.2f} GB)")
+                        logging.info(f"Deleting torrent '{torrent.name}' (Size: {size_gb:.2f} GB)")
                         torrent.delete(delete_files=True)
                         break
     except APIConnectionError as e:
-        print(f"Connection to qBittorrent failed: {e}")
+        logging.error(f"Connection to qBittorrent failed: {e}")
 
-
-qb = Client(host='127.0.0.1:8080', port=8080, username='', password='')
+qb = Client(host='127.0.0.1:8080', port=8080, username='fmk3325', password='3P2dAErvRdMMV5x')
 qb.auth_log_in()
 
 call_count = 0
@@ -38,13 +42,13 @@ while True:
         print("Start Running....")
         pause_and_resume_unregistered_torrents(qb)
         call_count += 1
-        
+
         if call_count >= 100:
-            print('Re-authentication......')
+            logging.info('Re-authentication......')
             qb.auth_log_in()
             call_count = 0
     except APIConnectionError as e:
-        print(f"Connection to qBittorrent failed: {e}")
+        logging.error(f"Connection to qBittorrent failed: {e}")
 
     time.sleep(5)
 
