@@ -14,7 +14,6 @@ def pause_and_resume_unregistered_torrents(qb_client):
                 break;
 
 
-# 连接到qBittorrent客户端
 
 qb = Client(host='', port=8080, username='', password='')
 qb.auth_log_in()
@@ -24,6 +23,3 @@ while True:
     print("----------Start----------")
     pause_and_resume_unregistered_torrents(qb)
     time.sleep(10)
-
-# 退出
-qb.auth_log_out()
