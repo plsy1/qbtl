@@ -36,7 +36,7 @@ def pause_and_resume_unregistered_torrents(qb_client):
                     torrent.resume()
                     break;
                 else:
-                    torrent.resume;
+                    torrent.resume()
     
     except APIConnectionError as e:
         logging.error(f"Connection to qBittorrent failed: {e}")
